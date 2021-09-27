@@ -1,22 +1,6 @@
 package ru.netology.nmedia
 
-import ru.netology.nmedia.dto.Post
-
 object PostService {
-    fun like(post: Post) {
-        if (post.likedByMe) {
-            post.likesCount--
-        } else {
-            post.likesCount++
-        }
-
-        post.likedByMe = !post.likedByMe
-    }
-
-    fun repost(post: Post) {
-        post.repostsCount++
-    }
-
     fun getCountText(count: Int): String =
         when {
             count < 1_000 -> count.toString()
