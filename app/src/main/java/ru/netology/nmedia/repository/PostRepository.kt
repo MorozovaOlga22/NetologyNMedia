@@ -9,6 +9,8 @@ interface PostRepository {
     fun get(): LiveData<List<Post>>
     fun likeById(id: Long)
     fun repostById(id: Long)
+    fun removeById(id: Long)
+    fun save(post: Post)
 }
 
 class PostRepositoryInMemoryImpl : PostRepository {
@@ -55,25 +57,58 @@ class PostRepositoryInMemoryImpl : PostRepository {
         )
     )
 
+    private var nextId = 1L
+
     private val data = MutableLiveData(defaultPosts)
 
     override fun get(): LiveData<List<Post>> = data
 
     override fun likeById(id: Long) {
         val updater = { post: Post ->
-            if (post.id == id) post.copy(
-                likesCount = if (post.likedByMe) post.likesCount - 1 else post.likesCount + 1,
-                likedByMe = !post.likedByMe
-            ) else post
+            if (post.id == id)
+                post.copy(
+                    likesCount = if (post.likedByMe) post.likesCount - 1 else post.likesCount + 1,
+                    likedByMe = !post.likedByMe
+                )
+            else
+                post
         }
         updatePost(updater)
     }
 
     override fun repostById(id: Long) {
         val updater = { post: Post ->
-            if (post.id == id) post.copy(
-                repostsCount = post.repostsCount + 1
-            ) else post
+            if (post.id == id)
+                post.copy(repostsCount = post.repostsCount + 1)
+            else
+                post
+        }
+        updatePost(updater)
+    }
+
+    override fun removeById(id: Long) {
+        val posts = getPostsFromLiveData()
+        val updatedPosts = posts.filter { post -> post.id != id }
+        data.value = updatedPosts
+    }
+
+    override fun save(post: Post) {
+        if (post.id == 0L) {
+            val newPost = post.copy(
+                id = nextId++,
+                author = "Me",
+                published = "now"
+            )
+            val posts = listOf(newPost) + getPostsFromLiveData()
+            data.value = posts
+            return
+        }
+
+        val updater = { oldPost: Post ->
+            if (oldPost.id == post.id)
+                oldPost.copy(content = post.content)
+            else
+                oldPost
         }
         updatePost(updater)
     }
