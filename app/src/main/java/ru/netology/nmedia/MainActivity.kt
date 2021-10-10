@@ -1,8 +1,9 @@
 package ru.netology.nmedia
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.dto.Post
 
@@ -13,33 +14,55 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModel: PostViewModel by viewModels()
-        viewModel.data.observe(this) { post ->
-            updateView(binding, post)
+        val adapter = PostAdapter(object : OnInteractionListener {
+            override fun onLike(post: Post) =
+                viewModel.likeById(post.id)
+
+            override fun onRepost(post: Post) =
+                viewModel.repostById(post.id)
+
+            override fun onEdit(post: Post) =
+                viewModel.edit(post)
+
+            override fun onRemove(post: Post) =
+                viewModel.removeById(post.id)
+        }
+        )
+
+        binding.list.adapter = adapter
+
+        viewModel.data.observe(this) { posts ->
+            adapter.submitList(posts)
         }
 
-        with(binding) {
-            likesImage.setOnClickListener {
-                viewModel.like()
+        viewModel.editedPost.observe(this) { post ->
+            if (post.id == 0L) {
+                return@observe
             }
-            repostsImage.setOnClickListener {
-                viewModel.repost()
+            with(binding.content) {
+                requestFocus()
+                setText(post.content)
             }
         }
-    }
 
-    private fun updateView(binding: ActivityMainBinding, post: Post) {
-        with(binding) {
-            author.text = post.author
-            published.text = post.published
-            content.text = post.content
+        binding.save.setOnClickListener {
+            with(binding.content) {
+                if (text.isNullOrBlank()) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Content can't be empty",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
 
-            val likesImageResource =
-                if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_likes_24
-            likesImage.setImageResource(likesImageResource)
+                viewModel.changeContent(text.toString())
+                viewModel.save()
 
-            likesText.text = PostService.getCountText(post.likesCount)
-            repostsText.text = PostService.getCountText(post.repostsCount)
-            viewingsText.text = PostService.getCountText(post.viewingsCount)
+                setText("")
+                clearFocus()
+                AndroidUtils.hideKeyboard(this)
+            }
         }
     }
 }
