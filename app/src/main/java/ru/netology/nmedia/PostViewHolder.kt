@@ -1,5 +1,8 @@
 package ru.netology.nmedia
 
+import android.content.Intent
+import android.net.Uri
+import android.view.View
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.databinding.CardPostBinding
@@ -46,6 +49,18 @@ class PostViewHolder(
                         }
                     }
                 }.show()
+            }
+
+            if (!post.videoUrl.isNullOrBlank()) {
+                video.visibility = View.VISIBLE
+                video.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl))
+                    this.root.context.apply {
+                        val shareIntent =
+                            Intent.createChooser(intent, getString(R.string.chooser_play_video))
+                        startActivity(shareIntent)
+                    }
+                }
             }
         }
     }

@@ -76,6 +76,20 @@
         tools:text="@sample/posts.json/data/content" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/video"
+        style="@style/Widget.AppTheme.VideoButton"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/video_size"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:contentDescription="@string/chooser_play_video"
+        android:visibility="gone"
+        app:icon="@drawable/ic_baseline_play_circle_64"
+        app:iconGravity="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/content" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/like"
         style="@style/Widget.AppTheme.LikeButton"
         android:layout_width="wrap_content"
@@ -84,7 +98,7 @@
         android:contentDescription="@string/like_post"
         app:icon="@drawable/ic_like_selector_24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/content"
+        app:layout_constraintTop_toBottomOf="@+id/video"
         tools:text="@sample/posts.json/data/likes" />
 
     <com.google.android.material.button.MaterialButton
@@ -96,7 +110,7 @@
         android:contentDescription="@string/repost"
         app:icon="@drawable/ic_reposts_24"
         app:layout_constraintStart_toEndOf="@+id/like"
-        app:layout_constraintTop_toBottomOf="@+id/content"
+        app:layout_constraintTop_toBottomOf="@+id/video"
         tools:text="@sample/posts.json/data/reposts" />
 
     <com.google.android.material.button.MaterialButton
@@ -111,7 +125,7 @@
         app:icon="@drawable/ic_viewings_24"
         app:layout_constraintBottom_toBottomOf="@+id/like"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/content"
+        app:layout_constraintTop_toBottomOf="@+id/video"
         tools:text="@sample/posts.json/data/viewings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
