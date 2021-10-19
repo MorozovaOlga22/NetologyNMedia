@@ -1,5 +1,6 @@
 package ru.netology.nmedia
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.View
@@ -52,15 +53,19 @@ class PostViewHolder(
             }
 
             if (!post.videoUrl.isNullOrBlank()) {
-                video.visibility = View.VISIBLE
-                video.setOnClickListener {
+                videoGroup.visibility = View.VISIBLE
+
+                val videoClickListener: (View) -> Context = { view ->
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl))
-                    this.root.context.apply {
+                    view.context.apply {
                         val shareIntent =
                             Intent.createChooser(intent, getString(R.string.chooser_play_video))
                         startActivity(shareIntent)
                     }
                 }
+
+                videoButton.setOnClickListener { view -> videoClickListener(view) }
+                videoPicture.setOnClickListener { view -> videoClickListener(view) }
             }
         }
     }

@@ -38,9 +38,8 @@
     </style>
 
     <style name="Widget.AppTheme.VideoButton" parent="Widget.MaterialComponents.Button.TextButton.Icon">
-        <item name="iconTint">?attr/colorControlActivated</item>
+        <item name="iconTint">?attr/colorError</item>
         <item name="android:minWidth">@dimen/icon_button_min_size</item>
         <item name="android:minHeight">@dimen/icon_button_min_size</item>
-        <item name="backgroundTint">?attr/colorButtonNormal</item>
     </style>
 </resources>
