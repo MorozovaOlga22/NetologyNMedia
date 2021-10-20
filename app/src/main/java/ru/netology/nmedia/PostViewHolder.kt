@@ -52,7 +52,9 @@ class PostViewHolder(
                 }.show()
             }
 
-            if (!post.videoUrl.isNullOrBlank()) {
+            if (post.videoUrl.isNullOrBlank()) {
+                videoGroup.visibility = View.GONE
+            } else {
                 videoGroup.visibility = View.VISIBLE
 
                 val videoClickListener: (View) -> Context = { view ->
