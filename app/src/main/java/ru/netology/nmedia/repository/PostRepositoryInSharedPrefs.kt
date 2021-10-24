@@ -31,6 +31,7 @@ class PostRepositoryInSharedPrefs(context: Context) : PostRepository {
             try {
                 val posts: List<Post> = gson.fromJson(postsJson, type)
                 data.value = posts
+                nextId = (posts.map { post -> post.id }.maxOrNull() ?: 0L) + 1L
             } catch (e: Exception) {
                 e.printStackTrace()
             }

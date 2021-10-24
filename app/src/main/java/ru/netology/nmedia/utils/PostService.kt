@@ -1,4 +1,4 @@
-package ru.netology.nmedia
+package ru.netology.nmedia.utils
 
 object PostService {
     fun getCountText(count: Int): String =

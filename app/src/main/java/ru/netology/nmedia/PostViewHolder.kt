@@ -8,6 +8,7 @@ import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.utils.PostService
 
 class PostViewHolder(
     private val binding: CardPostBinding,
@@ -21,7 +22,7 @@ class PostViewHolder(
             content.text = post.content
 
             like.isChecked = post.likedByMe
-            like.text = "${post.likesCount}"
+            like.text = PostService.getCountText(post.likesCount)
 
             repost.text = PostService.getCountText(post.repostsCount)
             viewing.text = PostService.getCountText(post.viewingsCount)
