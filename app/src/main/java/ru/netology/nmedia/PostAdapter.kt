@@ -11,6 +11,7 @@ interface OnInteractionListener {
     fun onRepost(post: Post)
     fun onEdit(post: Post)
     fun onRemove(post: Post)
+    fun onShowOnePost(post: Post)
 }
 
 class PostAdapter(

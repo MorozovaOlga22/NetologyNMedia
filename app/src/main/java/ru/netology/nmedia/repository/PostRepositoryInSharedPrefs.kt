@@ -93,6 +93,9 @@ class PostRepositoryInSharedPrefs(context: Context) : PostRepository {
         updatePost(updater)
     }
 
+    override fun getById(postId: Long) =
+        getPostsFromLiveData().find { post -> post.id == postId }
+
     private fun sync() {
         prefs.edit().apply {
             val postsJson = gson.toJson(data.value)
@@ -108,5 +111,6 @@ class PostRepositoryInSharedPrefs(context: Context) : PostRepository {
         sync()
     }
 
-    private fun getPostsFromLiveData() = data.value ?: throw RuntimeException("Data not specified")
+    private fun getPostsFromLiveData() =
+        data.value ?: throw RuntimeException("Data not specified")
 }

@@ -120,6 +120,9 @@ class PostRepositoryInMemoryImpl : PostRepository {
         updatePost(updater)
     }
 
+    override fun getById(postId: Long) =
+        getPostsFromLiveData().find { post -> post.id == postId }
+
     private fun updatePost(updater: (Post) -> Post) {
         val posts = getPostsFromLiveData()
         val updatedPosts = posts.map(updater)
