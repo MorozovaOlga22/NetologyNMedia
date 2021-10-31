@@ -6,11 +6,11 @@ import androidx.lifecycle.LiveData
 import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
-import ru.netology.nmedia.repository.PostRepositorySQLite
+import ru.netology.nmedia.repository.PostRepositoryDB
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: PostRepository = PostRepositorySQLite(
-        AppDb.getInstance(application).postDao
+    private val repository: PostRepository = PostRepositoryDB(
+        AppDb.getInstance(application).postDao()
     )
     val data: LiveData<List<Post>> = repository.get()
 
